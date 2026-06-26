@@ -1,0 +1,45 @@
+:root {
+    --main-body-color: #222;
+}
+
+body {
+    background-color: var(--main-body-color);
+    color: lightgray;
+    font-size: large;
+    height: 100%;
+}
+
+.tabs {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.tabs li {
+    display: inline-block;
+}
+
+.tabs li.selected {
+    border-bottom: 2px solid grey;
+}
+
+.tabs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tabs li:not(.selected) a:hover {
+    color: aquamarine;
+    border-bottom: 2px solid lightcyan;
+}
+
+input,
+select,
+select option {
+    flex: 1 1 auto;
+    font-size: large;
+    height: 2em;
+    background-color: var(--main-body-color);
+    color: lightgray;
+    border-color: lightgray;
+    border-radius: 0.5em;
+}

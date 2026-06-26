@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+
+    <script type="module">
+        import { todoStore } from './stores/todos.js';
+        import { TodoListEntryTag } from './todos/TodoListEntry.js'
+        import { NewTodoFormTag, NewTodoEvent } from './todos/NewTodoForm.js'
+        // Elements
+        const hero = document.getElementById('hero');
+        const subList = document.getElementById('todo-list');
+        const createTodoForm = document.getElementById('create-todo')
+        let listDisconnect;
+
+        // React to changing the selected todo
+        function onKeySelect(key) {
+            hero.setAttribute('data-key', key)
+            if (listDisconnect) {
+                listDisconnect();
+            }
+            listDisconnect = todoStore.useTodo(key, (todo) => {
+                console.log('Make the list', todo)
+                const newSubList = todo.dependencies.map((depKey) => {
+                    const entry = document.createElement(TodoListEntryTag)
+                    entry.setAttribute('data-key', depKey);
+                    return entry;
+                });
+                subList.replaceChildren(...newSubList);
+            })
+        }
+        window.addEventListener('hashchange', (ev) => {
+            console.log('hashchange event')
+            onKeySelect(window.location.hash.slice(1));
+        })
+        // Load the initial key
+        onKeySelect(window.location.hash.slice(1))
+
+        createTodoForm.addEventListener(NewTodoEvent, (ev) => {
+            const newTodo = todoStore.addTodo(ev.detail.label, ev.detail.scale, 'A new SubTask');
+            todoStore.createDependency(window.location.hash.slice(1), newTodo.key);
+        })
+    </script>
+    <style>
+        .indented {
+            padding-left: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>Task Tracker 2000</h2>
+        <nav>
+            <ol class="tabs">
+                <li><a href="/index.html">List</a></li>
+                <li class="selected">Details</li>
+            </ol>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <todo-list-entry id="hero" />
+        </section>
+        <section class="todo-list indented" id="todo-list">
+            <div class="todo-list-item-placeholedr">One</div>
+            <div class="todo-list-item-placeholedr">Two</div>
+            <div class="todo-list-item-placeholedr">Three</div>
+        </section>
+        <section>
+            <new-todo-form id="create-todo" />
+        </section>
+    </main>
+    <footer>
+        <small>For all your tracking needs</small>
+    </footer>
+</body>
+
+</html>

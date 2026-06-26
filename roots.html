@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+
+    <script type="module">
+        import { todoStore } from './stores/todos.js';
+        import { TodoListEntryTag } from './todos/TodoListEntry.js';
+        const rootElements = todoStore.getRoots().map((todoKey) => {
+            console.log('Todo', todoKey)
+            const listEntry = document.createElement(TodoListEntryTag)
+            listEntry.setAttribute('data-key', todoKey);
+            return listEntry;
+        })
+        document.getElementById('todo-list').replaceChildren(...rootElements);
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <h2>Task Tracker 2000</h2>
+        <nav>
+            <ol class="tabs">
+                <li><a href="/index.html">List</a></li>
+                <li class="selected"><a>Roots</a></li>
+            </ol>
+        </nav>
+    </header>
+    <main>
+        <section class="todo-list" id="todo-list">
+            <div class="todo-list-item-placeholedr">One</div>
+            <div class="todo-list-item-placeholedr">Two</div>
+            <div class="todo-list-item-placeholedr">Three</div>
+        </section>
+    </main>
+    <footer>
+        <small>For all your tracking needs</small>
+    </footer>
+</body>
+
+</html>

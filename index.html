@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+
+    <script type="module">
+        import { keyedList, createElementWithAttrs } from './app/lib.js';
+        import { todoStore } from './stores/todos.js';
+        import { ActiveTodosTag } from './todos/ActiveTodos.js';
+        import { NewTodoFormTag, NewTodoEvent } from './todos/NewTodoForm.js';
+
+        const listSection = document.getElementById('todo-list');
+
+        const createRootForm = document.getElementById('create-root-todo');
+        createRootForm.addEventListener(NewTodoEvent, (ev) => {
+            todoStore.addTodo(ev.detail.label, ev.detail.scale, 'A New Root')
+        });
+
+        // Render the list of root todos
+        todoStore.useRoots((rootKeys) => {
+            keyedList(listSection, rootKeys, (key) => document.createElement(ActiveTodosTag));
+        })
+
+    </script>
+
+    <style>
+        .todo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: flex;
+            align-content: space-between;
+            margin-top: 0.5em;
+            gap: 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>Task Tracker 2000</h2>
+        <nav>
+            <ol class="tabs">
+                <li class="selected"><a>List</a></li>
+                <li><a href="/roots.html">Roots</a></li>
+            </ol>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <new-todo-form id="create-root-todo" />
+        </section>
+        <section class="todo-list" id="todo-list">
+            <div class="todo-list-item-placeholedr">One</div>
+            <div class="todo-list-item-placeholedr">Two</div>
+            <div class="todo-list-item-placeholedr">Three</div>
+        </section>
+    </main>
+    <footer>
+        <small>For all your tracking needs</small>
+    </footer>
+</body>
+
+</html>
