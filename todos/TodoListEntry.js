@@ -52,7 +52,7 @@ export class TodoListItem extends HTMLElement {
         const listItem = this.shadow.getElementById('list-item')
         listItem.setAttribute('title', todo.description)
         listItem.addEventListener('click', (ev) => {
-            window.location = `details.html#${todo.key}`;
+            window.location.href = `./details.html#${todo.key}`;
         });
     }
 
